@@ -80,4 +80,4 @@ const GridBox = styled.div`
   overflow-x: ${(props) => props.overflowX};
 `
 
-export default Grid
+export default Grid;

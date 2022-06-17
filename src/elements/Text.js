@@ -33,4 +33,4 @@ const P = styled.p`
   line-height: ${(props) => props.lineHeight};
 `
 
-export default Text
+export default Text;
