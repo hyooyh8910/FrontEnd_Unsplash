@@ -21,6 +21,8 @@ const Login = () => {
                 <Grid align="center" height="164px" margin="0 0 32 0">
                   <div>
                     <LoginLogo
+                   
+                    
                       src="https://unsplash.com/assets/core/logo-black-df2168ed0c378fa5506b1816e75eb379d06cfcd0af01e07a2eb813ae9b5d7405.svg"
                     ></LoginLogo>
                   </div>
@@ -30,8 +32,11 @@ const Login = () => {
                   </p>
                 </Grid>
                 <Grid height="auto">
-                  <SocialLogin >
-                  <RiKakaoTalkFill size="19" />
+                  <SocialLogin
+                   onClick ={() => {
+                    window.location.href = "https://accounts.kakao.com/login?continue=https%3A%2F%2Fkauth.kakao.com%2Foauth%2Fauthorize%3Fresponse_type%3Dcode%26redirect_uri%3Dhttp%253A%252F%252Flocalhost%253A8080%252Fuser%252Fsignin%252Fkakao%26client_id%3D366bf4df105f7d1fb0c91cb6b4faeba0"
+                  }} >
+                  <RiKakaoTalkFill size="30" />
                     <p>Login with KakaoTalk</p>
                   </SocialLogin>
                 </Grid>
@@ -124,9 +129,11 @@ const SocialLogin = styled.a`
   background-color: #fee501;
   justify-content: center;
   align-items: center;
-  padding: 9px 1px;
+  padding: 9px 0;
   font-weight: 500;
   border: 1px solid transparent;
+  cursor: pointer;
+
 
   transition: background-color 0.1s ease-in-out, border-color 0.1s ease-in-out, color 0.1s ease-in-out;
 
