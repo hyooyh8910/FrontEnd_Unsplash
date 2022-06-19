@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
-
+import axios from 'axios'
 // React-icons
 import { RiKakaoTalkFill } from 'react-icons/ri'
 
@@ -9,6 +9,95 @@ import { RiKakaoTalkFill } from 'react-icons/ri'
 import Grid from '../elements/Grid'
 
 const Login = () => {
+
+  const [loginInfo, setLoginInfo] = React.useState({
+    useremail: "",
+    password: "",
+  });
+
+  console.log(loginInfo.useremail);
+  const { useremail, password } = loginInfo;
+
+   // **** Ref **** //
+   const emailRef = useRef(null);
+   const pwRef = useRef(null);
+
+    // **** 유효성 검사 **** //
+  /*
+  유효성 검사
+  '시작을'  0~9 사이 숫자 or a-z A-Z 알바펫 아무거나로 시작하고  /  중간에 - _  . 같은 문자가 있을수도 있고 없을수도 있으며 / 
+  그 후에 0~9 사이 숫자 or a-z A-Z 알바펫중 하나의 문자가 없거나 연달아 나올수 있으며 /  @ 가 반드시 존재하고  / 
+  0-9a-zA-Z 여기서 하나가 있고  /  중간에 - _  . 같은 문자가 있을수도 있고 없을수도 있으며 / 그 후에 0~9 사이 숫자 or a-z A-Z 알바펫중 하나의 
+  문자가 없거나 연달아 나올수 있으며 /  반드시  .  이 존재하고  / [a-zA-Z] 의 문자가 2개나 3개가 존재 /   이 모든것은 대소문자 구분안함 
+  */
+  const emailRegEx = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
+  // 유효성 검사 :최소 8 자, 최소 하나의 문자 및 하나의 숫자
+  const pwRegEx = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+ 
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    const { value, name } = e.target;
+    setLoginInfo({ ...loginInfo, [name]: value });
+  };
+  console.log(loginInfo);
+
+
+
+  const clickLogin = (e) => {
+    e.preventDefault();
+    // navigate("/main")
+    if(!emailRegEx.test(useremail)){
+      emailRef.current.focus();
+      alert("Invalid email or password.");
+    }
+    if(!pwRegEx.test(password)){
+      alert("Invalid email or password.");
+      pwRef.current.focus();
+    }
+
+    axios({
+      method: "post",
+      headers: {
+        Authorization: localStorage.getItem("jwt-token"),
+      },
+      // url: "http://13.125.251.80/user/signin",
+      data: {
+        loginInfo
+        // useremail: loginInfo.useremail,
+        // password: loginInfo.password,
+      },
+    })
+      .then((response) => {
+        console.log(response);
+        // console.log("data.token:", response.data.token);
+       
+        alert("Welcome");
+        // navigate("/main")
+      })
+      .catch(function (error) {
+
+        if (error.response) {
+          // console.log("res", response);
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log("에러1");
+      
+        } else if (error.request) {
+          console.log(error.request);
+          console.log("에러2");
+        } else if (error.message) {
+          console.log("Error", error.message);
+          console.log("에러3");
+        } else {
+          console.log(error.config);
+          console.log("에러4")
+        }
+        alert("다시 확인해주세요.");
+      });
+    };
+
+
 
 
   return (
@@ -21,8 +110,7 @@ const Login = () => {
                 <Grid align="center" height="164px" margin="0 0 32 0">
                   <div>
                     <LoginLogo
-                   
-                    
+                    onChange={clickLogin}
                       src="https://unsplash.com/assets/core/logo-black-df2168ed0c378fa5506b1816e75eb379d06cfcd0af01e07a2eb813ae9b5d7405.svg"
                     ></LoginLogo>
                   </div>
@@ -43,16 +131,35 @@ const Login = () => {
                 <Grid height="auto">
                   <FormSeperator>OR</FormSeperator>
                 </Grid>
+
+                <form onSubmit={clickLogin}>
                 <Grid margin="20px 0" height="auto">
                   <FormGroup>
                     <label className='form-label'>Email address</label>
-                    <input className='form-input' name="email"></input>
+                    <input 
+                    className='form-input' 
+                    name="useremail"
+                    defaultValue={useremail}
+                    onChange={handleChange}
+                    ref={emailRef}
+                    required
+                    ></input>
                   </FormGroup>
                   <FormGroup>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                       <label className='form-label'>Password</label>
                     </div>
-                    <input className="form-input" type="password" name="password" maxLength="20"></input>
+                    <input 
+                    className="form-input" 
+                    type="password" 
+                    name="password" 
+                    placeholder="min. 8 char"
+                    maxLength="20"
+                    defaultValue={password}
+                    onChange={handleChange}
+                    ref={pwRef}
+                    required
+                    ></input>
                   </FormGroup>
                   <Grid height="auto" margin="0 0 24px 0">
                     <LoginBtn type='submit'>
@@ -60,14 +167,19 @@ const Login = () => {
                     </LoginBtn>
                     <Grid margin="32px 0 0 0" height="auto" align="center">
                       <Question>Don’t have an account? &nbsp;</Question>
-                      <JoinLink>
+                      <JoinLink
+                       onClick ={() => {
+                        window.location.href = "/user/signup"
+                      }} >
                         Join Unsplash
                       </JoinLink>
                     </Grid>
-
                   </Grid>
-
                 </Grid>
+
+
+                </form>
+
               </Grid>
             </Grid>
           </Container>
@@ -213,6 +325,8 @@ const LoginBtn = styled.button`
   padding: 9px 18px;
   border-radius: 4px;
   touch-action: manipulation;
+  cursor: pointer;
+
 
   :disabled {
     opacity: 0.7;
@@ -230,6 +344,8 @@ const JoinLink = styled.a`
   color: #767676;
   transition: color 0.1s ease-in-out, fill 0.1s ease-in-out, opacity 0.1s ease-in-out;
   text-decoration: underline;
+  cursor: pointer;
+
 
   &:hover {
     color: #111111;
