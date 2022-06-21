@@ -8,6 +8,7 @@ import LogIn from "../pages/Login";
 import SignUp from "../pages/SignUp";
 import Upload from "../pages/Upload";
 import Edit from "../pages/Edit";
+import Detail from "../pages/Detail";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
       <Route exact path="/user/signup" element={< SignUp />} /> 
       <Route exact path="/posts/post" element={< Upload />} />
       <Route exact path="/posts/edit" element={< Edit />} />
+      <Route exact path="/posts/detail" element={< Detail />} />
     </Routes>
   </>
   );

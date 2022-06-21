@@ -1,0 +1,31 @@
+@media (min-width: 1400px) {
+    .detail-modal-content {
+      margin-left: 220px;
+      margin-right: 220px;
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .modal-info {
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .detail-modal-content {
+      margin-bottom: 0px;
+      margin-top: 16px;
+    }
+  }
+  
+  @media (min-width: 768px) and (max-width: 1399px) {
+    .detail-modal-content {
+      margin-left: 70px;
+      margin-right: 70px;
+    }
+  }
+  
+  @media (max-widht: 767px) {
+  }
+  
+
+  
