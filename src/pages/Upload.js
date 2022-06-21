@@ -99,7 +99,7 @@ const Upload = (props) => {
       console.log(file_url)
       image_link_ref.current = { url: file_url }
 
-      axios.post(" http://localhost:5001/posts",
+      axios.post("http://localhost:5001/posts",
         {
           "image": image_ref.current?.url,
           "title": title_ref.current.value,
@@ -114,7 +114,7 @@ const Upload = (props) => {
 
         })
         .catch(function (error) {
-          console.log(error.response.data.Message);
+          alert('nope')
         })
     }
 
@@ -156,11 +156,12 @@ const Upload = (props) => {
 
         </UploadBox>
       </div>
-      <div className='footer'>
+     
+    </Box> 
+    <div className='footer'>
         <button onClick={() => { props.closeModal(false) }}>Cancel</button>
         <button onClick={uploadFB}>Submit to Unsplash</button>
       </div>
-    </Box>
     </>
   )
 }
@@ -210,7 +211,6 @@ input {
   width: 250px;
   height: 300px;
 }
-
 `;
 
 export default Upload
