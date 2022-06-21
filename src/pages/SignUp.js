@@ -9,18 +9,18 @@ import Grid from '../elements/Grid';
 
 const SignUp = () => {
   const [userInfo, setUserInfo] = useState({
-    fullname: "",
-    useremail: "",
-    username: "",
+    fullName: "",
+    userEmail: "",
+    userName: "",
     password: "",
   });
 
-  const { fullname, useremail, username, password } = userInfo;
+  const { fullName, userEmail, userName, password } = userInfo;
 
   // **** Ref **** //
-  const fullnameRef = useRef(null);
+  const fullNameRef = useRef(null);
   const emailRef = useRef(null);
-  const usernameRef = useRef(null);
+  const userNameRef = useRef(null);
   const pwRef = useRef(null);
 
 
@@ -45,26 +45,8 @@ const SignUp = () => {
 
   const clickJoin = (e) => {
     e.preventDefault();
-    // console.log(useremail);
-    // if (emailRegEx.test(useremail)) {
-    //   if (pwRegEx.test(password)) {
-    //     // console.log(response);
-    //     console.log(userInfo);
-    //     // axios.post("http://13.125.251.80/user/signup", userInfo);
-    //     alert("WELCOME");
-    //     window.location.href = "/user/login"
-    //   }
-    //   else {
-    //     alert("Invalid email or password.");
-    //     pwRef.current.focus();
-    //   }
-    // }
-    // else {
-    //   emailRef.current.focus();
-    //   alert("Invalid email or password.");
-    // }
 
-    if(!emailRegEx.test(useremail)){
+    if(!emailRegEx.test(userEmail)){
       emailRef.current.focus();
       alert("Invalid email or password.");
     }
@@ -83,8 +65,8 @@ const SignUp = () => {
       .then((response) => {
         console.log(response);
         // console.log("data.token:", response.data.token);
-      
-        alert("Welcome");
+        // window.location.href = "/user/login"
+        // alert("Welcome");
         // navigate("/main")
       })
       .catch(function (error) {
@@ -146,7 +128,10 @@ const SignUp = () => {
                 <JoinTitle>Join Unsplash</JoinTitle>
                 <p size="15px" margin="16px 0" align="center">
                   Already have an account?&nbsp;
-                  <NotiLink>
+                  <NotiLink
+                  onClick={() => {
+                    window.location.href = "/user/login"
+                  }}>
                     Login
                   </NotiLink>
                 </p>
@@ -167,9 +152,9 @@ const SignUp = () => {
                   <label className="form-label">Full name</label>
                   <input className="form-input"
                     onChange={handleChange}
-                    ref={fullnameRef}
-                    defaultValue={fullname}
-                    name="fullname"
+                    ref={fullNameRef}
+                    defaultValue={fullName}
+                    name="fullName"
                     autoComplete="on"
                     required
                   ></input>
@@ -179,8 +164,8 @@ const SignUp = () => {
                   <input className="form-input"
                     onChange={handleChange}
                     ref={emailRef}
-                    defaultValue={useremail}
-                    name="useremail"
+                    defaultValue={userEmail}
+                    name="userEmail"
                     autoComplete="on"
                     required
                   ></input>
@@ -190,9 +175,9 @@ const SignUp = () => {
                   <input className="form-input"
                     placeholder="only letters, numbers, and underscores"
                     onChange={handleChange}
-                    ref={usernameRef}
-                    defaultValue={username}
-                    name="username"
+                    ref={userNameRef}
+                    defaultValue={userName}
+                    name="userName"
                     autoComplete="on"
                 required
                   ></input>
@@ -450,6 +435,7 @@ const NotiLink = styled.a`
   font-size: 13px;
   transition: color 0.1s ease-in-out, fill 0.1s ease-in-out, opacity 0.1s ease-in-out;
   text-decoration: underline;
+  cursor: pointer;
 
   &:hover {
     color: #111111;
