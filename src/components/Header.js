@@ -14,19 +14,27 @@ const Header = () => {
       <Nav>
         <div className='navbar'>
           <svg width="32" height="32" class="hic6U" viewBox="0 0 32 32" version="1.1" aria-labelledby="unsplash-home" aria-hidden="false">
-            <title id="unsplash-home">Unsplash Home</title>
+            <title id="unsplash-home"
+            >Unsplash Home</title>
             <path d="M10 9V0h12v9H10zm12 5h10v18H0V14h10v9h12v-9z"></path>
           </svg>
           <Search>
             <div className='search'>
-              <svg viewBox="0 0 32 32" version="1.1" aria-hidden="false">
+              <input type="text"
+                className='search-box'
+                placeholder="search image" />
+                {/* <div className='icone'>
+                   <svg viewBox="0 0 32 32" version="1.1" aria-hidden="false">
                 <path d="M22 20c1.2-1.6 2-3.7 2-6 0-5.5-4.5-10-10-10S4 8.5 4 14s4.5 10 10 10c2.3 0 4.3-.7 6-2l6.1 6 1.9-2-6-6zm-8 1.3c-4 0-7.3-3.3-7.3-7.3S10 6.7 14 6.7s7.3 3.3 7.3 7.3-3.3 7.3-7.3 7.3z">
-                </path></svg>
+                </path>
+              </svg>
+                </div> */}
             </div>
           </Search>
           <ul>
             <li>
-              <a className="advertise" href="/advertise">
+              <a className="advertise"
+                href="/advertise">
                 <div>Advertise</div>
               </a>
             </li>
@@ -38,13 +46,13 @@ const Header = () => {
             </li>
           </ul>
           <Submit onClick={() => {
-             setOpenModal(true);
-            }} >
+            setOpenModal(true);
+          }} >
             <button
-            class="submit">
-            Submit
-            <span> a photo</span>
-          </button>
+              class="submit" >
+              Submit
+              <span> a photo</span>
+            </button>
           </Submit>
           <Bell>
             <svg width="24" height="24" viewBox="0 0 32 32" version="1.1" aria-hidden="false">
@@ -55,7 +63,7 @@ const Header = () => {
         </div >
       </Nav>
       <SubNav />
-      {openModal && <Modal closeModal={setOpenModal}/>}
+      {openModal && <Modal closeModal={setOpenModal} />}
     </>
   )
 }
@@ -127,24 +135,46 @@ padding-left: 30px;
 padding-right: 630px;
 
 .search {
-width:20px;
+width: 20px;
 height: 20px;
+margin-bottom: 18px;
+}
 
+.search-box {
+  background-color: #eee;
+  width: 620px;
+  height: 23px;
+  border-radius: 30px;
+  padding: 9px;
+  border: none;
+  outline: none;
+}
+
+input {
+  position: absolute;
+}
+
+svg {
+  position: relative;
 }
 `;
 
 
 const Submit = styled.div`
-background-color: #eee;
+// background-color: #eee;
   color: #767676;
   cursor: pointer;
-  // cursor: not-allowed;
   font-size: 14px;
   height: 32px;
   line-height: 30px;
   padding: 0 11px;
+  
+  button {
   border: none;
   outline: 0;
+  height: 30px;
+  border-radius: 4px;
+  }
 `;
 
 const Bell = styled.div`
