@@ -15,7 +15,6 @@ function Modal({ closeModal }) {
           >
             X</button>
           <div className='modalContainer'>
-            
             <Upload closeModal={closeModal}/>
           </div>
         </div>
@@ -32,7 +31,7 @@ min-height: 70vh;
 
 .modalBackground {
     width: 100vw;
-    height: 100vh;
+    height: 110vh;
     background-color: rgba(200, 200, 200);
     position: fixed;
     display: flex;
@@ -42,13 +41,14 @@ min-height: 70vh;
   
   .modalContainer {
     width: 1000px;
-    height: 550px;
+    height: 650px;
     border-radius: 5px;
     background-color: white;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     display: flex;
     flex-direction: column;
-    padding: 25px;
+    padding-left:10px;
+    margin-bottom: 70px;
   }
   
   .title {
