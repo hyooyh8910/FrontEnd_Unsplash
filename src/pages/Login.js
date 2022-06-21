@@ -1,9 +1,9 @@
-import React, { useRef } from 'react'
-import styled from 'styled-components'
-import axios from 'axios'
+import React, { useRef } from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
 // React-icons
-import { RiKakaoTalkFill } from 'react-icons/ri'
-
+import { RiKakaoTalkFill } from 'react-icons/ri';
+import { useNavigate } from 'react-router-dom';
 
 // elements & components
 import Grid from '../elements/Grid'
@@ -11,12 +11,13 @@ import Grid from '../elements/Grid'
 const Login = () => {
 
   const [loginInfo, setLoginInfo] = React.useState({
-    useremail: "",
+    userEmail: "",
     password: "",
   });
 
-  console.log(loginInfo.useremail);
-  const { useremail, password } = loginInfo;
+  console.log(loginInfo.userEmail);
+  const navigate = useNavigate();
+  const { userEmail, password } = loginInfo;
 
    // **** Ref **** //
    const emailRef = useRef(null);
@@ -47,7 +48,7 @@ const Login = () => {
   const clickLogin = (e) => {
     e.preventDefault();
     // navigate("/main")
-    if(!emailRegEx.test(useremail)){
+    if(!emailRegEx.test(userEmail)){
       emailRef.current.focus();
       alert("Invalid email or password.");
     }
@@ -61,11 +62,11 @@ const Login = () => {
       headers: {
         Authorization: localStorage.getItem("jwt-token"),
       },
-      // url: "http://13.125.251.80/user/signin",
+      url: "http://13.125.251.80/user/login",
       data: {
-        loginInfo
-        // useremail: loginInfo.useremail,
-        // password: loginInfo.password,
+        // loginInfo
+        userEmail: loginInfo.userEmail,
+        password: loginInfo.password
       },
     })
       .then((response) => {
@@ -73,7 +74,7 @@ const Login = () => {
         // console.log("data.token:", response.data.token);
        
         alert("Welcome");
-        // navigate("/main")
+        navigate("/")
       })
       .catch(function (error) {
 
@@ -138,8 +139,8 @@ const Login = () => {
                     <label className='form-label'>Email address</label>
                     <input 
                     className='form-input' 
-                    name="useremail"
-                    defaultValue={useremail}
+                    name="userEmail"
+                    defaultValue={loginInfo.userEmail}
                     onChange={handleChange}
                     ref={emailRef}
                     required
@@ -155,7 +156,7 @@ const Login = () => {
                     name="password" 
                     placeholder="min. 8 char"
                     maxLength="20"
-                    defaultValue={password}
+                    defaultValue={loginInfo.password}
                     onChange={handleChange}
                     ref={pwRef}
                     required
