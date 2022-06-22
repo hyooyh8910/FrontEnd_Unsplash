@@ -473,3 +473,4 @@ const ModalInfo = styled.div`
     justify-content: right;
   }
 `
+export default Detail;
