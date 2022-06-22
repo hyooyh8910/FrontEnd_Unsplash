@@ -7,7 +7,7 @@ import Modal from './Modal';
 
 const Header = () => {
   const navigate = useNavigate();
-  const [openModal, setOpenModal] = useState(false);
+  // const [openModal, setOpenModal] = useState(false);
 
   return (
     <>
@@ -45,9 +45,9 @@ const Header = () => {
               </a>
             </li>
           </ul>
-          <Submit onClick={() => {
-            setOpenModal(true);
-          }} >
+          <Submit onClick={() =>
+           { navigate('/posts/post') }}
+           >
             <button
               class="submit" >
               Submit
@@ -63,7 +63,7 @@ const Header = () => {
         </div >
       </Nav>
       <SubNav />
-      {openModal && <Modal closeModal={setOpenModal} />}
+      {/* {openModal && <Modal closeModal={setOpenModal} />} */}
     </>
   )
 }
