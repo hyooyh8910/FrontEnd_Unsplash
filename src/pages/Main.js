@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import axios from "axios";
 import Header from "../components/Header";
@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import { ImageList } from '@mui/material';
 import { ImageListItem } from '@mui/material';
 import { style } from '@mui/system';
+
 
 //page
 import Header2 from '../components/Header2';
@@ -18,10 +19,32 @@ import mainimg from '../static/MainBackground.jpg';
 
 // import SearchIcon from '@material-ui/icons/Search'
 import { BiSearchAlt2 } from 'react-icons/bi'
+import { useNavigate } from 'react-router-dom';
 
 
 const Main = () => {
+  const [posts, setPosts] = React.useState(null);
+  const navigate = useNavigate();
 
+
+  // const ClickImage = () => { 
+  //   navigate(`/posts/detail/${postIdx}`)
+  // }
+
+  useEffect(() => {
+    const fetchBoards = async () => {
+      try {
+        const response = await axios.get("http://54.180.105.56/posts");
+        setPosts(response.data.body);
+        // console.log(response.data.body);
+
+      } catch (e) {
+        console.log(e);
+
+      }
+    };
+    fetchBoards();
+  }, []);
 
   return (
     <>
@@ -51,7 +74,35 @@ const Main = () => {
         </div>
       </Grid>
       <Grid>
-        {/* <Masonry></Masonry> */}
+        {/* {posts &&
+            posts.map((post, id) => {
+              return (
+                <div key={id}>
+                  <div>{post.postIdx}</div>
+                  <div
+                    // postIdx={post.postIdx}
+                    // title={post.title}
+                    // description={post.description}
+                    // userName={post.userName}
+                    // image={post.image}
+                  />
+                </div>
+              );
+            })} */}
+
+        <ImageList variant="masonry" cols={3} gap={8}>
+          {posts &&
+            posts.map((post) => {
+              return (
+                <ImageListItem key={post.img}>
+                  <img src={post.image}
+                    // postIdx={post.postIdx}
+                    onClick={() => { navigate(`/posts/detail/${post.postIdx}`) }}
+                  />
+                </ImageListItem>
+              )
+            })}
+        </ImageList>
       </Grid>
     </>
   )

@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
-  import styled from 'styled-components';
+import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 // **** pages**** //
 import EditScroll from '../components/EditScroll';
 import Grid from '../elements/Grid'
 import { Button } from '@mui/material';
 import { margin } from '@mui/system';
 
+
 const Edit = (props) => {
   const navigate = useNavigate();
   // const card_id = props.match.params.id
   const [location, setLocations] = useState('');
   const [textarea, setTexts] = useState('');
+
 
   const change_text = (e) => {
     setTexts(e.target.value)
@@ -21,6 +24,20 @@ const Edit = (props) => {
     setLocations(e.target.value)
   }
 
+  // useEffect(() => {
+  //   const fetchPost = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `http://54.180.105.56/posts/${postIdx}`
+  //       );
+  //       setPost(response.data.body)
+  //       // console.log(response.data.body);
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   };
+  //   fetchPost()
+  // }, []);
 
   return (
     <>

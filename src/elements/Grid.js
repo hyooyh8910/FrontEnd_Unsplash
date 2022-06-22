@@ -14,7 +14,6 @@ const Grid = (props) => {
     align: align,
     bg: bg,
 
-
     overflowY: overflowY,
     verticalAlign: verticalAlign,
     alignItems: alignItems,
@@ -27,7 +26,7 @@ const Grid = (props) => {
   }
 
   return (
-    <GridBox {...styles} onClick={_onClick}>
+    <GridBox {...styles}>
       {children}
     </GridBox>
   )
@@ -43,9 +42,6 @@ Grid.defaultProps = {
   margin: false,
   align: false,
   bg: false,
-  _onClick: () => {},
-
-  // 주혜 추가
   overflowY: false,
   verticalAlign: false,
   alignItems: false,
@@ -67,8 +63,6 @@ const GridBox = styled.div`
   display: ${(props) => (props.flex ? `${props.flex}` : '')};
   text-align: ${(props) => props.align};
   background: ${(props) => props.bg};
-
-  // 주혜 추가
   overflow-y: ${(props) => props.overflowY};
   vertical-align: ${(props) => (props.verticalAlign ? `${props.verticalAlign};` : '')};
   align-items: ${(props) => (props.alignItems ? `${props.alignItems};` : '')};
