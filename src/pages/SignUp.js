@@ -69,7 +69,7 @@ const navigate = useNavigate();
         console.log(response);
         console.log("data.token:", response.data.token);
         window.location.href = "/user/login"
-        alert("Welcome");
+        alert("WELCOME ;-)");
       })
       .catch(function (error) {
 
