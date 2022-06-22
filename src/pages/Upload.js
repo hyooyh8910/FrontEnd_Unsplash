@@ -93,13 +93,6 @@ function Upload() {
                     <div className='upload'>
                         <div className='uploadBox'>
 
-                            {/* <div className='file'>
-                                <label for="file">
-                                    첨부파일</label>
-                                <input type="file"
-                                     />
-                            </div> */}
-
                             <input type='file' ref={image_ref}
                                     onChange={(e) => {
                                         encodeFileToBase64(e.target.files[0]);
