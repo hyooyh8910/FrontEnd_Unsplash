@@ -16,16 +16,24 @@ const Header = () => {
   const navigate = useNavigate();
   // const [openModal, setOpenModal] = useState(false);
   console.log(localStorage);
+    
+  const submitAction = (e) => {
+    if (localStorage.length === 0 ) {
+        alert("Please Login First")  
+    } else { 
+      navigate('/posts/post')
+    }
+  }
+
   const logoutAction = (e) => {
-  
     if (localStorage.length === 0) {
-      alert("로그인부터 해주세요")
+      alert("Please Login First")
       window.location.replace("/user/login")
 
     } else {
       localStorage.removeItem('jwt-token')
       window.location.replace("/")
-      alert("로그아웃 완료")
+      alert("Good Bye :-)")
     }
   };
 
@@ -33,7 +41,7 @@ const Header = () => {
     <>
       <Nav>
         <div className='navbar'>
-          <svg width="32" height="32" class="hic6U" viewBox="0 0 32 32" version="1.1" aria-labelledby="unsplash-home" aria-hidden="false">
+          <svg width="32" height="32" className="hic6U" viewBox="0 0 32 32" version="1.1" aria-labelledby="unsplash-home" aria-hidden="false">
             <title id="unsplash-home"
             >Unsplash Home</title>
             <path d="M10 9V0h12v9H10zm12 5h10v18H0V14h10v9h12v-9z"></path>
@@ -67,8 +75,7 @@ const Header = () => {
             </li>
           </ul>
           <SubmitBtn
-          onClick={() =>
-            { navigate('/posts/post') }}
+          onClick={submitAction}
           >Submit&nbsp;a&nbsp;photo</SubmitBtn>
             <Grid width="auto" padding="0 6px">
             <NavMenu

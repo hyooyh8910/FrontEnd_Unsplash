@@ -73,7 +73,7 @@ const Login = () => {
         console.log(response);
        
         localStorage.setItem("jwt-token", response.data.token);
-        alert("Welcome");
+        alert("WELCOME ;-)");
         window.location.href="/"
        
       })
