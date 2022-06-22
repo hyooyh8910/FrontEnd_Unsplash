@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import axios from "axios";
 import Header from "../components/Header";
@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import { ImageList } from '@mui/material';
 import { ImageListItem } from '@mui/material';
 import { style } from '@mui/system';
+
 
 //page
 import Header2 from '../components/Header2';
@@ -21,7 +22,22 @@ import { BiSearchAlt2 } from 'react-icons/bi'
 
 
 const Main = () => {
+  const [posts, setPosts] = React.useState(null);
 
+  useEffect(() => {
+    const fetchBoards = async () => {
+      try {
+        const response = await axios.get("http://54.180.105.56/posts");
+        setPosts(response.data.body);
+        // console.log(response.data.body);
+
+      } catch (e) {
+        console.log(e);
+
+      }
+    };
+    fetchBoards();
+  }, []);
 
   return (
     <>
@@ -51,7 +67,37 @@ const Main = () => {
         </div>
       </Grid>
       <Grid>
-        {/* <Masonry></Masonry> */}
+        {/* {posts &&
+            posts.map((post, id) => {
+              return (
+                <div key={id}>
+                  <div>{post.postIdx}</div>
+                  <div
+                    // postIdx={post.postIdx}
+                    // title={post.title}
+                    // description={post.description}
+                    // userName={post.userName}
+                    // image={post.image}
+                  />
+                </div>
+              );
+            })} */}
+
+       
+          {posts &&
+            posts.map((post, id) => {
+              return (
+                <ImageList variant="masonry" cols={3} gap={8}>
+                <ImageListItem key={id}>
+                  <img src={post.image} />
+                </ImageListItem>
+                </ImageList>
+              )
+             
+            })}
+      
+
+
       </Grid>
     </>
   )

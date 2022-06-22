@@ -7,14 +7,18 @@ function SubNav() {
             <div className='navbar'>
                 <div className='subnav'>
                     <p>Editorial</p>
+                    <p>Following</p>
                     <div>
                         <div className='line'>
                             <ul>
+                                <li>CurrentEvents</li>
+                                <li>Wallpapers</li>
+                                <li>3DRenders</li>
+                                <li>Textures&Patterns</li>
+                                <li>Experimental</li>
+                                <li>Architecture</li>
                                 <li>Nature</li>
-                                <li>Fashion</li>
-                                <li>Film</li>
-                                <li>Food&Drink</li>
-                                <li>People</li>
+                                <li>Business&Work</li>
                             </ul>
                             </div>
                     </div>
