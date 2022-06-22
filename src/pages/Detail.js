@@ -12,14 +12,17 @@ import { IoArrowRedoSharp } from 'react-icons/io5'
 import { MdInfo } from 'react-icons/md'
 import { BsThreeDots } from 'react-icons/bs'
 import { IoCloseSharp } from 'react-icons/io5'
-
-
+import { MdDelete } from "react-icons/md";
 
 const Detail = (props) => {
   const params = useParams();
   const navigate = useNavigate();
   const postIdx = Number(params.postIdx);
   const [post, setPost] = React.useState(null);
+  const token = localStorage.getItem("jwt-token");
+  const axios = require('axios');
+
+  // console.log(postIdx);
 
   // console.log(postIdx);
 
@@ -44,6 +47,21 @@ const Detail = (props) => {
     fetchPost()
   }, []);
 
+  const config = () => {
+    axios.delete ('http://54.180.105.56/posts/' + postIdx , 
+    { headers: { 'Authorization': `Bearer ${token}` }, }
+  )
+  .then(function (response) {
+    console.log(JSON.stringify(response.data));
+    alert("삭제가 완료됐습니다!")
+    navigate('/')
+  })
+  .catch(function (error) {
+    console.log(error);
+    alert("본인이 작성한 게시물만 삭제할 수 있습니다.")
+  });
+  };
+
   return (
     <>
       <ModalBody>
@@ -51,7 +69,7 @@ const Detail = (props) => {
           <ModalOverlay>
             <div>
               <button className="close-detail-btn"
-              onClick={() => { navigate(`/`) }}>
+                onClick={() => { navigate('/') }}>
                 <IoCloseSharp className="close-detail-icon" />
               </button>
             </div>
@@ -71,12 +89,12 @@ const Detail = (props) => {
                     </UserInfo>
                   </UserBox>
                   <Title>
-                   {post.title} 
+                    {post.title}
                   </Title>
                   <Toggle>
                     <div className='icon-box'>
-                      <button className='icon-btn'>
-                        <HiHeart />
+                      <button onClick={config} className='icon-btn'>
+                      <MdDelete/>
                       </button>
                     </div>
                     <div className='icon-box'>
@@ -104,7 +122,7 @@ const Detail = (props) => {
                 <ModalImage>
                   <div className='image-wrap'>
                     <div className='image-container'>
-                      <img  src={post.image}/>
+                      <img src={post.image} />
                     </div>
                   </div>
                 </ModalImage>
@@ -455,8 +473,3 @@ const ModalInfo = styled.div`
     justify-content: right;
   }
 `
-
-
-export default Detail
-
-
