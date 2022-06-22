@@ -15,20 +15,23 @@ import { IoCloseSharp } from 'react-icons/io5'
 
 
 
-
 const Detail = (props) => {
   const params = useParams();
   const navigate = useNavigate();
   const postIdx = Number(params.postIdx);
   const [post, setPost] = React.useState(null);
 
+  // console.log(postIdx);
+
   useEffect(() => {
     const fetchPost = async () => {
+      // console.log(params);
       try {
         const response = await axios.get(
-          `http://54.180.105.56/posts/4`
+          `http://54.180.105.56/posts/${postIdx}`
         );
         setPost(response.data.body)
+
         // console.log(response.data.body);
       } catch (e) {
         console.log(e);

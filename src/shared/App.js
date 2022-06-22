@@ -21,7 +21,7 @@ function App() {
       <Route exact path="/user/signup" element={< SignUp />} /> 
       <Route exact path="/posts/post" element={< Upload />} />
       <Route exact path="/posts/edit" element={< Edit />} />
-      <Route exact path="/posts/detail" element={< Detail />} />
+      <Route exact path="/posts/detail/:postIdx" element={< Detail />} />
     </Routes>
   </>
   );

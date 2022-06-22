@@ -23,39 +23,21 @@ const Edit = (props) => {
   const change_location = (e) => {
     setLocations(e.target.value)
   }
-//  axios.get("http://54.180.105.56/posts",
-//                 {
-//                   responseType : 'json'
-//                 }
-//             )
-//                 .then(function (response) {
-//                     // alert("작성이 완료되었습니다!")
-//                     console.log("response:", response);
-//                     console.log("response.data.body:",response.data.body[0]);
-//                     // navigate('/');
-//                     // console.log(response)
 
-//                 })
-//                 .catch(function (error) {
-//                     console.log(error.response.data.message);
-  //                 })
-
-  var axios = require('axios');
-
-  var config = {
-    method: 'get',
-    url: 'http://54.180.105.56/posts/4',
-    headers: {}
-  };
-
-  axios(config)
-    .then(function (response) {
-      console.log(JSON.stringify(response.data));
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-
+  // useEffect(() => {
+  //   const fetchPost = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `http://54.180.105.56/posts/${postIdx}`
+  //       );
+  //       setPost(response.data.body)
+  //       // console.log(response.data.body);
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   };
+  //   fetchPost()
+  // }, []);
 
   return (
     <>
