@@ -1,13 +1,16 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import {useNavigate} from 'react-router-dom';
 // React-icons
 import { RiKakaoTalkFill } from 'react-icons/ri';
 
 // elements & components
 import Grid from '../elements/Grid';
 
+
 const SignUp = () => {
+const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
     fullName: "",
     userEmail: "",
@@ -57,17 +60,16 @@ const SignUp = () => {
 
     axios({
       method: "post",
-      url: "http://13.125.251.80/user/signup",
+      url: "http://54.180.105.56/user/signup",
       data: {
         userInfo
       },
     })
       .then((response) => {
         console.log(response);
-        // console.log("data.token:", response.data.token);
-        // window.location.href = "/user/login"
-        // alert("Welcome");
-        // navigate("/main")
+        console.log("data.token:", response.data.token);
+        window.location.href = "/user/login"
+        alert("Welcome");
       })
       .catch(function (error) {
 
@@ -87,7 +89,7 @@ const SignUp = () => {
           console.log(error.config);
           console.log("에러4")
         }
-        alert("다시 확인해주세요.");
+        alert("Invalid email or password.");
       });
 
     // then/catch
