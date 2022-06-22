@@ -7,9 +7,6 @@ import { ImageList } from '@mui/material';
 import { ImageListItem } from '@mui/material';
 import { style } from '@mui/system';
 
-import { useNavigate } from 'react-router-dom';
-
-
 //page
 import Header2 from '../components/Header2';
 import Grid from '../elements/Grid';
