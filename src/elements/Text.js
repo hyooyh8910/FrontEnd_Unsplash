@@ -20,7 +20,6 @@ Text.defaultProps = {
   size: '18px',
   align: false,
   margin: false,
-  _onClick: () => {},
   lineHeight: 1.6,
 }
 

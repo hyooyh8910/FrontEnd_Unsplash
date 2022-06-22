@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 import './Detail.css';
 // react-icons
 import { IoCheckmarkCircleSharp } from 'react-icons/io5'
@@ -11,103 +13,133 @@ import { MdInfo } from 'react-icons/md'
 import { BsThreeDots } from 'react-icons/bs'
 import { IoCloseSharp } from 'react-icons/io5'
 
+
+
+
 const Detail = (props) => {
+  const params = useParams();
+  const navigate = useNavigate();
+  const postIdx = Number(params.postIdx);
+  const [post, setPost] = React.useState(null);
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const response = await axios.get(
+          `http://54.180.105.56/posts/4`
+        );
+        setPost(response.data.body)
+        // console.log(response.data.body);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchPost()
+  }, []);
+
   return (
     <>
       <ModalBody>
-        <ModalOverlay>
-          <div>
-            <button className="close-detail-btn">
-              <IoCloseSharp className="close-detail-icon" />
-            </button>
-          </div>
-          <ModalContent className='detail-modal-content'>
-            <DetailContainer>
-              <ModalHeader>
-                <UserBox>
-                  <UserProfile>
-                    <img scr="https://images.unsplash.com/placeholder-avatars/extra-large.jpg?dpr=2&auto=format&fit=crop&w=32&h=32&q=60&crop=faces&bg=fff" />
-                  </UserProfile>
-                  <UserInfo>
-                    <p className='username'>cat_love</p>
-                    <div className='user-status-flex'>
-                      <p className='user-status'>Available for hire</p>
-                      <IoCheckmarkCircleSharp />
-                    </div>
-                  </UserInfo>
-                </UserBox>
-                <Toggle>
-                  <div className='icon-box'>
-                    <button className='icon-btn'>
-                      <HiHeart />
-                    </button>
-                  </div>
-                  <div className='icon-box'>
-                    <button className='icon-btn'>
-                      <GoPlus />
-                    </button>
-                  </div>
-                  <DownloadToggle>
-                    <div>
-                      <button className='download-btn btn'>
-                        Download free
+        {post && (
+          <ModalOverlay>
+            <div>
+              <button className="close-detail-btn"
+              onClick = {() => {navigate('/')}}>
+                <IoCloseSharp className="close-detail-icon" />
+              </button>
+            </div>
+            <ModalContent className='detail-modal-content'>
+              <DetailContainer>
+                <ModalHeader>
+                  <UserBox>
+                    <UserProfile>
+                      <img scr="https://images.unsplash.com/placeholder-avatars/extra-large.jpg?dpr=2&auto=format&fit=crop&w=32&h=32&q=60&crop=faces&bg=fff" />
+                    </UserProfile>
+                    <UserInfo>
+                      <p className='username'>{post.userName}</p>
+                      <div className='user-status-flex'>
+                        <p className='user-status'>Available for hire</p>
+                        <IoCheckmarkCircleSharp />
+                      </div>
+                    </UserInfo>
+                  </UserBox>
+                  <Title>
+                   {post.title} 
+                  </Title>
+                  <Toggle>
+                    <div className='icon-box'>
+                      <button className='icon-btn'>
+                        <HiHeart />
                       </button>
                     </div>
-                    <div>
-                      <button className='size-btn btn'>
-                        <IoIosArrowDown />
+                    <div className='icon-box'>
+                      <button className='icon-btn'>
+                        <GoPlus />
                       </button>
                     </div>
-                  </DownloadToggle>
-                </Toggle>
-              </ModalHeader>
-              <ModalImage>
-                <div className='image-wrap'>
-                  <div className='image-container'>
-                    <img></img>
+                    <DownloadToggle>
+                      <div>
+                        <button className='download-btn btn'>
+                          Download free
+                        </button>
+                      </div>
+                      <div>
+                        <button className='size-btn btn'>
+                          <IoIosArrowDown />
+                        </button>
+                      </div>
+                    </DownloadToggle>
+                  </Toggle>
+                </ModalHeader>
+                <ModalImage>
+                  <div className='image-wrap'>
+                    <div className='image-container'>
+                      <img  src={post.image}/>
+                    </div>
                   </div>
-                </div>
-              </ModalImage>
-              <ModalInfo>
-                <div className='image-info'>
-                  <div>
-                    <h3 className='image-info-title'>Views</h3>
-                    <span className='image-info-content'>info-content</span>
+                </ModalImage>
+                <ModalInfo>
+                  <div className='image-info'>
+                    <div>
+                      <h3 className='image-info-title'>Views</h3>
+                      <span className='image-info-content'>info-content</span>
+                    </div>
+                    <div>
+                      <h3 className='image-info-title'>Downloads</h3>
+                      <span className='image-info-content'>--</span>
+                    </div>
+                    <div>
+                      <h3 className='image-info-title'>Description</h3>
+                      <span className='image-info-content'>
+                        <a>{post.description}</a>
+                      </span>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className='image-info-title'>Downloads</h3>
-                    <span className='image-info-content'>--</span>
+                  <div className='image-toggle'>
+                    <div className='icon-box'>
+                      <button className='icon-btn'>
+                        <IoArrowRedoSharp />
+                        &nbsp;Shared
+                      </button>
+                    </div>
+                    <div className='icon-box'>
+                      <button className='icon-btn'>
+                        <MdInfo />
+                        &nbsp;Info
+                      </button>
+                    </div>
+                    <div className='icon-box'>
+                      <button className='icon-btn'>
+                        <BsThreeDots />
+                      </button>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className='image-info-title'>Featured in</h3>
-                    <span className='image-info-content'>
-                      <a>card.tagname</a>
-                    </span>
-                  </div>
-                </div>
-                <div className='image-toggle'>
-                  <div className='icon-box'>
-                    <button className='icon-btn'>
-                      <IoArrowRedoSharp />
-                      &nbsp;Shared
-                    </button>
-                  </div>
-                  <div className='icon-box'>
-                    <button className='icon-btn'>
-                      <MdInfo />
-                      &nbsp;Info
-                    </button>
-                  </div>
-                  <div className='icon-box'>
-                    <button className='icon-btn'>
-                      <BsThreeDots />
-                    </button>
-                  </div>
-                </div>
-              </ModalInfo>
-            </DetailContainer>
-          </ModalContent>
-        </ModalOverlay>
+                </ModalInfo>
+              </DetailContainer>
+            </ModalContent>
+          </ModalOverlay>
+        )}
+
       </ModalBody>
 
     </>
@@ -165,6 +197,17 @@ const ModalContent = styled.div`
   min-height: 100%;
   display: flex;
   flex-direction: column;
+`
+const Title = styled.div`
+flex-basis: 200px;
+flex-grow: 1;
+height: 40px;
+margin-right: -200px;
+padding: 4px;
+display: flex;
+align-items: center;
+font-weight: bold;
+color: #999;
 `
 
 const DetailContainer = styled.div`

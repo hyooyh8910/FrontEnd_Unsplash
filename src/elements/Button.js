@@ -38,7 +38,7 @@ const Button = (props) => {
 
   return (
     <>
-      <Btn onClick={_onClick} {...styles}>{text}</Btn>
+      <Btn {...styles}>{text}</Btn>
     </>
   )
 }
