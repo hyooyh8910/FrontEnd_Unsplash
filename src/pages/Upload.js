@@ -1,202 +1,228 @@
-import { Container, style } from '@mui/system'
-import axios from 'axios'
 import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
-import { useDispatch } from "react-redux";
-import { addPostDB } from '../redux/modules/post'
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { auth, db, storage } from "../shared/firebase";
-import { async } from '@firebase/util';
+import { storage } from "../shared/firebase";
+import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+import Grid from '../elements/Grid'
+import { AiOutlineFileImage } from "react-icons/ai";
 
 
-const Upload = (props) => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+function Upload() {
+    const [imageSrc, setImageSrc] = useState('')
+    const image_ref = useState(null)
+    const image_link_ref = useState(null)
+    const title_ref = useState(null)
+    const des_ref = useState(null)
 
-  const [imageSrc, setImageSrc] = useState('')
-  const image_ref = useState(null)
-  const image_link_ref = useState(null)
-  const title_ref = useState(null)
-  const des_ref = useState(null)
-
-
-  //이미지 미리보기
-  const encodeFileToBase64 = (fileBlob) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(fileBlob);
-    return new Promise((resolve) => {
-      reader.onload = () => {
-        setImageSrc(reader.result);
-        resolve();
-      };
-    });
-  }
-
-  // 리덕스
-  // const upload = async () => {
-  //   let file = image_ref.current.files[0];
-  //   console.log(file);
-  //   dispatch(
-  //     addPostDB({
-  //       title: title_ref.current.value,
-  //       description: des_ref.current.value,
-  //       image: file
-  //     })
-  //   );
-  //   window.location.href("/");
-  // };
+    const navigate = useNavigate();
 
 
-  // 서버로 연결
-  // const upload = () => {
-  //   const formData = new FormData();
-  //   formData.append('image', image_ref.current.files[0]);
-  //   formData.append('title', title_ref.current.value);
-  //   formData.append('description', des_ref.current.value);
-
-  // formData.append('title', title);
-  // formData.append('description', imgDes);
-  // formData.append('image', imageSrc);
-
-
-  //   console.log("data => ", formData);
-
-  //   axios.post(" http://localhost:5001/posts", {
-  //     headers: {
-  //       "Content-Type": "multipart/form-data",
-  //       data: formData
-  //       // Authorization: `Bearer ${token}`,
-  //     },
-  //   })
-  //     .then(function (response) {
-  //       alert("작성이 완료되었습니다!")
-  //       // navigate('/');
-  //       console.log(response)
-
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error.response.data.Message);
-  //     })
-
-  // }
-
-  const uploadFB = async (e) => {
-    if (title_ref === "") {
-      window.alert("텍스트를 입력하세요")
+    //이미지 미리보기
+    const encodeFileToBase64 = (fileBlob) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(fileBlob);
+        return new Promise((resolve) => {
+            reader.onload = () => {
+                setImageSrc(reader.result);
+                resolve();
+            };
+        });
     }
 
-    else {
-      console.log(e.target.files);
-      const uploaded_file = await uploadBytes(
-        ref(storage, `images/${image_ref.current.files[0].name}`),
-        image_ref.current.files[0]
-      )
-      console.log(uploaded_file)
-      //Ref를 가지고온것은 중요, 이 Ref로 다운로드 URL을 가지고올것
+    const uploadFB = async (e) => {
+        if (title_ref === "") {
+            window.alert("텍스트를 입력하세요")
+        }
 
-      const file_url = await getDownloadURL(uploaded_file.ref)
-      console.log(file_url)
-      image_link_ref.current = { url: file_url }
+        else {
+            console.log(e.target.files);
+            const uploaded_file = await uploadBytes(
+                ref(storage, `images/${image_ref.current.files[0].name}`),
+                image_ref.current.files[0]
+            )
+            console.log(uploaded_file)
 
-      axios.post("http://localhost:5001/posts",
-        {
-          "image": image_ref.current?.url,
-          "title": title_ref.current.value,
-          "des": des_ref.current.value
-        }, 
-        // { headers: { 'Authorization': `Bearer ${token}` }, }
-      )
-        .then(function (response) {
-          alert("작성이 완료되었습니다!")
-          navigate('/');
-          console.log(response)
+            const file_url = await getDownloadURL(uploaded_file.ref)
+            console.log(file_url)
+            image_link_ref.current = { url: file_url }
 
-        })
-        .catch(function (error) {
-          alert('nope')
-        })
+            axios.post("http://localhost:5001/posts",
+                {
+                    "image": image_link_ref.current?.url,
+                    "title": title_ref.current.value,
+                    "des": des_ref.current.value
+                },
+                // { headers: { 'Authorization': `Bearer ${token}` }, }
+            )
+                .then(function (response) {
+                    alert("작성이 완료되었습니다!")
+                    navigate('/');
+                    console.log(response)
+
+                })
+                .catch(function (error) {
+                    alert('nope')
+                })
+        }
     }
 
-  }
+    return (
+        <>
+            <Title>
+                <strong>Submit to Unsplash</strong>
+                <a target="_blank"
+                    href="https://help.unsplash.com/contributing-to-unsplash/upload-a-photo-to-unsplash"
+                > Need help?</a>
+            </Title>
+            <Box>
+                <div className='border'>
+                    <div className='upload'>
+                        <div className='uploadBox'>
 
-  return (
-    <>
-    
-        <div className='title'>
-          <p>Submit to Unsplash</p>
-        </div>
-      <Box>
-      <div className='border'>
-        <UploadBox>
-          <div className='upload'>
-            <input type="file"
-              ref={image_ref}
-              onChange={(e) => {
-                encodeFileToBase64(e.target.files[0]);
-              }} />
-            <div className="picture">
-              {imageSrc && <img src={imageSrc}
-                alt="preview-img"
-              />}
-            </div>
+                            {/* <div className='file'>
+                                <label for="file">
+                                    첨부파일</label>
+                                <input type="file"
+                                     />
+                            </div> */}
 
-            <div className='content'>
-              <input ref={title_ref}
-                className="title"
-                placeholder='Add a tag'
-              />
+                            <input type='file'ref={image_ref}
+                                    onChange={(e) => {
+                                        encodeFileToBase64(e.target.files[0]);
+                                    }}
+                                accept='image/jpg,image/png,image/jpeg,image/gif'
+                                id='profile_img_upload' />
+                            <label for='profile_img_upload'>
+                            <AiOutlineFileImage /></label>
 
-              <input ref={des_ref}
-                className='description'
-                placeholder='Add a description (optional)'
-              />
-            </div>
-          </div>
+                            <div className="picture">
+                                {imageSrc && <img src={imageSrc}
+                                    alt="preview-img"
+                                />}
+                            </div>
+                        </div>
+                    </div>
 
-        </UploadBox>
-      </div>
-     
-    </Box> 
-    <div className='footer'>
-        <button onClick={() => { props.closeModal(false) }}>Cancel</button>
-        <button onClick={uploadFB}>Submit to Unsplash</button>
-      </div>
-    </>
-  )
+                    <Grid margin="20px -3px" height="auto" width="405px">
+                        <Input>
+                            <input ref={title_ref}
+                                className="title"
+                                placeholder='Add a tag'
+                            />
+                        </Input>
+                        <Input>
+                            <input ref={des_ref}
+                                className='description'
+                                placeholder='Add a description (optional)'
+                            />
+                        </Input>
+                    </Grid>
+
+                    <Grid margin="0 0 5px 0" >
+                        <Notification>
+                            <ul className="info-list"  >
+                                <li className="info-list-item">
+                                    <span className="bold">
+                                        High quality photos</span>
+                                    (at least <span className="bold">5MP</span>)
+                                </li>
+                                <li className="info-list-item">
+                                    Photos are
+                                    <span className="bold">
+                                        clear & original</span>
+                                </li>
+                            </ul>
+                        </Notification>
+                        <Notification>
+                            <ul className="info-list">
+                                <li className="info-list-item">
+                                    Only upload photos you
+                                    <span className="bold">
+                                        own the rights to</span>
+                                </li>
+                                <li className="info-list-item">
+                                    Zero tolerance for nudity, violence or hate</li>
+                            </ul>
+                        </Notification>
+                        <Notification>
+                            <ul className="info-list">
+                                <li className="info-list-item">
+                                    Respect the intellectual property of others</li>
+                                <li className="info-list-item">
+                                    Read the{' '}
+                                    <span>
+                                        <a className="link"
+                                            href
+                                            onClick={() => {
+                                                window.alert('준비중입니다.')
+                                            }}
+                                        > Unsplash Terms
+                                        </a>
+                                    </span>
+                                </li>
+                            </ul>
+                        </Notification>
+                    </Grid>
+                </div>
+            </Box >
+            <UploadFooter>
+                <div>
+                    <a href className="unsplash-license">
+                        Read the Unsplash License
+                    </a>
+                </div>
+                <div className='btn'>
+                    <button onClick={() => { navigate('/') }}>Cancel</button>
+                    <button onClick={uploadFB}>Submit to Unsplash</button>
+                </div>
+            </UploadFooter>
+        </>
+    )
 }
 
-const Box = styled.div`
+const Title = styled.div`
+display: flex;
+justify-content: space-between;
+align-tiems: center;
+margin-bottom: 10px;
 
-.title {
-  
+strong {
+    margin-left: 13px;
 }
 
-.border{
-  align-items: center;
-    border: 2px dashed #0000;
-    border-radius: 2px;
-    color: #767676;
-    display: flex;
-    flex-direction: column;
-    padding: 24px 16px;
+a {
+    margin-right: 14px;
 }
-
 `;
 
-const UploadBox = styled.div`
+const Box = styled.div`
+border: 2px dashed lightgray;
+margin-left: 12px;
+margin-right: 12px;
+
+.border{
+align-items: center;
+border: 2px dashed #0000;
+border-radius: 2px;
+color: #767676;
+display: flex;
+flex-direction: column;
+padding: 20px 5px;
+}
+
+.uploadBox {
 display: flex;
 align-items: center;
 
 border: 1px solid lightgray;
 padding: 0 1em;
 
-width: 250px;
-height: 400px;
+width: 370px;
+height: 480px;
 
-.border {
-  
-}
+margin-top: 10px;
+margin-bottom: 12px;
 
 img {
   width: 100%;
@@ -211,6 +237,97 @@ input {
   width: 250px;
   height: 300px;
 }
+
+button {
+    margin-left: 400px;
+}
+
+#profile_img_upload{
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+#profile_img_upload + label {
+    border: 1px solid #d9e1e8;
+    background-color: #fff;
+    color: #2b90d9;
+    border-radius: 3px;
+    padding: 8px 17px 8px 17px;
+    font-weight: 520;
+    font-size: 15px;
+    box-shadow: 1px 2px 3px 0px #f2f2f2;
+    outline: none;
+    margin-bottom: 400px;
+}
+
+#profile_img_upload:focus + label,
+#profile_img_upload + label:hover {
+    cursor: pointer;
+}
+
+
+`;
+
+const Input = styled.div`
+margin-bottom: 16px;
+width: 100%;
+
+input {
+    height: 30px;
+    display: block;
+    width: 400px;;
+    padding: 6px 1px;
+
+::placeholder {
+  padding-left: 6px;
+}
+}
+
+.description {
+    height: 60px;
+}
+`;
+
+const Notification = styled.div`
+display: inline-block;
+margin-left: 85px;
+
+.bold {
+ font-weight: bolder;
+}
+`;
+
+const UploadFooter = styled.div`
+height: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 35px;
+  margin-bottom: 35px;
+
+  a {
+      margin-left: 12px;
+      color: gray;
+  }
+
+button {
+   &:hover { 
+        border: 1.3px solid black;
+    }
+    height: 30px;
+    margin-right: 20px;
+    width: 140px;
+    color: black;
+    cursor: pointer;
+    background-color: #fff;
+      border: 1.5px solid #d1d1d1;
+      border-radius: 5px;
+  }
 `;
 
 export default Upload
