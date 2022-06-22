@@ -62,7 +62,7 @@ const Login = () => {
       headers: {
         Authorization: localStorage.getItem("jwt-token"),
       },
-      url: "http://13.125.251.80/user/login",
+      url: "http://54.180.105.56/user/signin",
       data: {
         // loginInfo
         userEmail: loginInfo.userEmail,
@@ -71,10 +71,11 @@ const Login = () => {
     })
       .then((response) => {
         console.log(response);
-        // console.log("data.token:", response.data.token);
        
+        localStorage.setItem("jwt-token", response.data.token);
         alert("Welcome");
-        navigate("/")
+        window.location.href="/"
+       
       })
       .catch(function (error) {
 
@@ -94,7 +95,7 @@ const Login = () => {
           console.log(error.config);
           console.log("에러4")
         }
-        alert("다시 확인해주세요.");
+        alert("Invalid email or password.");
       });
     };
 
