@@ -14,7 +14,7 @@ const Edit = (props) => {
   // const card_id = props.match.params.id
   const [location, setLocations] = useState('');
   const [textarea, setTexts] = useState('');
-  const 
+
 
   const change_text = (e) => {
     setTexts(e.target.value)
