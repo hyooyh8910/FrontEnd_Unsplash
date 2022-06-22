@@ -20,12 +20,11 @@ Text.defaultProps = {
   size: '18px',
   align: false,
   margin: false,
-  _onClick: () => {},
   lineHeight: 1.6,
 }
 
 const P = styled.p`
-  color: ${(props) => props.color};
+  color: '#222',
   margin: ${(props) => props.margin};
   font-size: ${(props) => props.size};
   font-weight: ${(props) => (props.bold ? '600' : '400')};
@@ -33,4 +32,4 @@ const P = styled.p`
   line-height: ${(props) => props.lineHeight};
 `
 
-export default Text
+export default Text;

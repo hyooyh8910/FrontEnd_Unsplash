@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import { ImageList } from '@mui/material';
 import { ImageListItem } from '@mui/material';
 import { style } from '@mui/system';
+
 import { useNavigate } from 'react-router-dom';
 
 
@@ -32,7 +33,6 @@ const Main = () => {
         const response = await axios.get("http://54.180.105.56/posts");
         setPosts(response.data.body);
         // console.log(response.data.body);
-
       } catch (e) {
         console.log(e);
 
@@ -89,6 +89,7 @@ const Main = () => {
           {posts &&
             posts.map((post, id) => {
               return (
+
                 <ImageList onClick={() => { navigate('/posts/detail') }}
                 variant="masonry" cols={3} gap={8}>
                 <ImageListItem key={id}>
