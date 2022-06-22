@@ -14,9 +14,15 @@ function Upload() {
     const image_link_ref = useState(null)
     const title_ref = useState(null)
     const des_ref = useState(null)
+    const token = localStorage.getItem("jwt-token");
 
     const navigate = useNavigate();
 
+
+    const [post, setPost] = React.useState({
+        title: "",
+        description: ""
+    });
 
     //이미지 미리보기
     const encodeFileToBase64 = (fileBlob) => {
@@ -30,15 +36,22 @@ function Upload() {
         });
     }
 
-    const uploadFB = async (e) => {
+    const handleForm = (e) => {
+        setPost({
+            ...post,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    // firebase코드 시작
+    const uploadFB = async () => {
         if (title_ref === "") {
-            window.alert("텍스트를 입력하세요")
+            window.alert("텍스트를 입력하세요!")
         }
 
         else {
-            console.log(e.target.files);
-            const uploaded_file = await uploadBytes(
-                ref(storage, `images/${image_ref.current.files[0].name}`),
+            console.log(image_ref.current.files)
+            const uploaded_file = await uploadBytes(ref(storage, `images/${image_ref.current.files[0].name}`),
                 image_ref.current.files[0]
             )
             console.log(uploaded_file)
@@ -47,13 +60,12 @@ function Upload() {
             console.log(file_url)
             image_link_ref.current = { url: file_url }
 
-            axios.post("http://localhost:5001/posts",
+            axios.post("http://54.180.105.56/posts/post",
                 {
                     "image": image_link_ref.current?.url,
                     "title": title_ref.current.value,
-                    "des": des_ref.current.value
-                },
-                // { headers: { 'Authorization': `Bearer ${token}` }, }
+                    "description": des_ref.current.value
+                }, { headers: { 'Authorization': `Bearer ${token}` }, }
             )
                 .then(function (response) {
                     alert("작성이 완료되었습니다!")
@@ -62,9 +74,10 @@ function Upload() {
 
                 })
                 .catch(function (error) {
-                    alert('nope')
+                    console.log(error.response.data.message);
                 })
         }
+
     }
 
     return (
@@ -80,14 +93,7 @@ function Upload() {
                     <div className='upload'>
                         <div className='uploadBox'>
 
-                            {/* <div className='file'>
-                                <label for="file">
-                                    첨부파일</label>
-                                <input type="file"
-                                     />
-                            </div> */}
-
-                            <input type='file'ref={image_ref}
+                            <input type='file' ref={image_ref}
                                     onChange={(e) => {
                                         encodeFileToBase64(e.target.files[0]);
                                     }}
@@ -107,12 +113,14 @@ function Upload() {
                     <Grid margin="20px -3px" height="auto" width="405px">
                         <Input>
                             <input ref={title_ref}
+                            onChange={handleForm}
                                 className="title"
                                 placeholder='Add a tag'
                             />
                         </Input>
                         <Input>
                             <input ref={des_ref}
+                            onChange={handleForm}
                                 className='description'
                                 placeholder='Add a description (optional)'
                             />
