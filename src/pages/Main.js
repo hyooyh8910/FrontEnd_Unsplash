@@ -7,6 +7,8 @@ import { ImageList } from '@mui/material';
 import { ImageListItem } from '@mui/material';
 import { style } from '@mui/system';
 
+import { useNavigate } from 'react-router-dom';
+
 
 //page
 import Header2 from '../components/Header2';
@@ -23,6 +25,7 @@ import { BiSearchAlt2 } from 'react-icons/bi'
 
 const Main = () => {
   const [posts, setPosts] = React.useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBoards = async () => {
@@ -30,7 +33,6 @@ const Main = () => {
         const response = await axios.get("http://54.180.105.56/posts");
         setPosts(response.data.body);
         // console.log(response.data.body);
-
       } catch (e) {
         console.log(e);
 
@@ -87,7 +89,9 @@ const Main = () => {
           {posts &&
             posts.map((post, id) => {
               return (
-                <ImageList variant="masonry" cols={3} gap={8}>
+
+                <ImageList onClick={() => { navigate('/posts/detail') }}
+                variant="masonry" cols={3} gap={8}>
                 <ImageListItem key={id}>
                   <img src={post.image} />
                 </ImageListItem>
@@ -181,49 +185,4 @@ const SearchInput = styled.input`
   }
 }
 `
-// const [state, setState] = React.useState("")
-
-// React.useEffect(() => {
-//   axios
-//     .get("") 
-//     .then((response) => {
-//       setState(response.data.posts);
-//       console.log(response.data);
-//     })
-//     .catch((response) => {
-//       console.log(response);
-//     });
-// }, []);
-
-{/* <Section>
-        <div className='background'>
-          <div className='photobox'>
-            <div className='text'>
-               <h1 className='title'>Unsplash</h1>
-               <h3>The internet’s source of 
-               <a href="/license">freely-usable images</a>
-               .</h3>
-               <p>Powered by creators everywhere.</p>
-               <div className='search'>
-
-               </div>
-            </div>
-            <img src='https://images.unsplash.com/photo-1654423625682-50ded826c581?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1vZi10aGUtZGF5fHx8fGVufDB8fHx8&amp;auto=format%2Ccompress&amp;fit=crop&amp;w=1000&amp;h=1000' />
-          </div>
-
-        </div>
-      </Section> */}
-
-{/* <ImageList variant="masonry" cols={3} gap={8}>
-        {state && state.map((posts, index) => (
-          <ImageListItem key={index}>
-            <img
-              src={`${posts.image}?w=248&fit=crop&auto=format`}
-              srcSet={`${posts.image}?w=248&fit=crop&auto=format&dpr=2 2x`}
-              alt={posts.title}
-              loading="lazy"
-            />
-          </ImageListItem>
-        ))}
-      </ImageList> */}
 export default Main
