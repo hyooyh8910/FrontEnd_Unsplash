@@ -7,9 +7,6 @@ import { ImageList } from '@mui/material';
 import { ImageListItem } from '@mui/material';
 import { style } from '@mui/system';
 
-import { useNavigate } from 'react-router-dom';
-
-
 //page
 import Header2 from '../components/Header2';
 import Grid from '../elements/Grid';
@@ -21,11 +18,17 @@ import mainimg from '../static/MainBackground.jpg';
 
 // import SearchIcon from '@material-ui/icons/Search'
 import { BiSearchAlt2 } from 'react-icons/bi'
+import { useNavigate } from 'react-router-dom';
 
 
 const Main = () => {
   const [posts, setPosts] = React.useState(null);
   const navigate = useNavigate();
+
+
+  // const ClickImage = () => { 
+  //   navigate(`/posts/detail/${postIdx}`)
+  // }
 
   useEffect(() => {
     const fetchBoards = async () => {
@@ -85,23 +88,19 @@ const Main = () => {
               );
             })} */}
 
-       
+        <ImageList variant="masonry" cols={3} gap={8}>
           {posts &&
-            posts.map((post, id) => {
+            posts.map((post) => {
               return (
-
-                <ImageList onClick={() => { navigate('/posts/detail') }}
-                variant="masonry" cols={3} gap={8}>
-                <ImageListItem key={id}>
-                  <img src={post.image} />
+                <ImageListItem key={post.img}>
+                  <img src={post.image}
+                    // postIdx={post.postIdx}
+                    onClick={() => { navigate(`/posts/detail/${post.postIdx}`) }}
+                  />
                 </ImageListItem>
-                </ImageList>
               )
-             
             })}
-      
-
-
+        </ImageList>
       </Grid>
     </>
   )
