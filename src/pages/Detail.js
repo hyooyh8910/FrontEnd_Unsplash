@@ -23,6 +23,10 @@ const Detail = (props) => {
 
   // console.log(postIdx);
 
+  // const EditClick = () => {
+  //   navigate(`/posts/edit/${postIdx}`);
+  // };
+
   useEffect(() => {
     const fetchPost = async () => {
       // console.log(params);
@@ -47,7 +51,7 @@ const Detail = (props) => {
           <ModalOverlay>
             <div>
               <button className="close-detail-btn"
-              onClick = {() => {navigate('/')}}>
+              onClick={() => { navigate(`/`) }}>
                 <IoCloseSharp className="close-detail-icon" />
               </button>
             </div>
@@ -76,7 +80,10 @@ const Detail = (props) => {
                       </button>
                     </div>
                     <div className='icon-box'>
-                      <button className='icon-btn'>
+                      <button 
+                      onClick={()=>{navigate(`/posts/edit/${post.postIdx}`)}}
+
+                      className='icon-btn'>
                         <GoPlus />
                       </button>
                     </div>
@@ -149,7 +156,6 @@ const Detail = (props) => {
   )
 }
 
-export default Detail
 
 const ModalBody = styled.div`
   width: 99vw;
@@ -449,5 +455,8 @@ const ModalInfo = styled.div`
     justify-content: right;
   }
 `
+
+
+export default Detail
 
 

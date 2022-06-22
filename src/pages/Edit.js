@@ -1,114 +1,175 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 // **** pages**** //
 import EditScroll from '../components/EditScroll';
 import Grid from '../elements/Grid'
 import { Button } from '@mui/material';
-import { margin } from '@mui/system';
 
 
-const Edit = (props) => {
-  const navigate = useNavigate();
+
+const Edit = () => {
+  const [post, setPost] = React.useState(null);
   // const card_id = props.match.params.id
-  const [location, setLocations] = useState('');
-  const [textarea, setTexts] = useState('');
+
+  const params = useParams();
+  const navigate = useNavigate();
+  const postIdx = Number(params.postIdx);
+
+  //axios get 요청
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        let response = await axios.get(
+          `http://54.180.105.56/posts/${postIdx}`
+        );
+        setPost(response.data.body)
+        // console.log(response);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchPost()
+  }, []);
 
 
-  const change_text = (e) => {
-    setTexts(e.target.value)
-  }
+  const [editInfo, setEditInfo] = useState({
+    title: "",
+    description: "",
+  });
+  const ttRef = useRef(null);
+  const dcRef = useRef(null);
 
-  const change_location = (e) => {
-    setLocations(e.target.value)
-  }
+  console.log(editInfo);
 
-  // useEffect(() => {
-  //   const fetchPost = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `http://54.180.105.56/posts/${postIdx}`
-  //       );
-  //       setPost(response.data.body)
-  //       // console.log(response.data.body);
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //   };
-  //   fetchPost()
-  // }, []);
+  console.log(localStorage);
+  //axios 수정 요청
+  const clickEdit =  (e) => {
+    e.preventDefault();
+    const currentKey = localStorage.getItem("jwt-token");
+    axios({
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${currentKey}`,
+      },
+      url: `http://54.180.105.56/posts/${postIdx}`,
+      data: {
+        // EditInfo
+        title: ttRef.current.value,
+        description: dcRef.current.value
+      },
+    })
+      .then((response) => {
+
+        // localStorage.setItem("jwt-token", response.data.token);
+        navigate(`/posts/detail/${postIdx}`)
+
+        console.log(response);
+        alert("enjoy your life");
+
+      })
+      .catch(function (error) {
+        alert("not your post.");
+      });
+  };
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    const { value, name } = e.target;
+    setEditInfo({ ...editInfo, [name]: value });
+  };
+
+
+
+
+  //post 에서 put으로 바꾸면 된다
+
+
 
   return (
     <>
-      <ModalBody>
-        <ModalOverlay>
-          <ModalContent className='modal-content'>
-            <DetailContainer>
-              <ModalImage>
-                <div>
-                 <img
-                 src="https://unsplash.com/assets/core/logo-white-8962708214629a3e8f9fbf5b87b70c3ace41c4175cbcc267f7fbb8449ac45bdd.svg"/>
-                  {/* <img src={card_id}/> */}
-                </div>
-              </ModalImage>
+      <form onSubmit={clickEdit}>
+        <ModalBody>
+          <ModalOverlay>
+            {post && (
+              <ModalContent className='modal-content'>
+                <DetailContainer>
+                  <ModalImage>
+                    <div>
+                      <img src={post.image} />
+                    </div>
+                  </ModalImage>
 
-              <div
-              style={{
-                marginLeft: '20px'
-              }}>
-                <EditScroll />
-                <Grid padding="20px 00 20px">
-                  <div>
-                  Description
+                  <div
+                    style={{
+                      marginLeft: '20px'
+                    }}>
+                    <EditScroll />
+                    <Grid padding="20px 00 20px">
+
+                      <div>
+                        Title
+                      </div>
+
+                      <Textarea
+                        // value={location}
+                        // onChange={change_location}
+                        className='form-input'
+                        placeholder={post.title}
+                        // defaultValue={editInfo.title}
+                        onChange={handleChange}
+                        ref={ttRef}
+                        nomal />
+                      <div>
+                        Description
+                      </div>
+                      <Textarea
+                        style={{
+                          paddingBottom: '90px'
+                        }}
+                        // onChange={change_text}
+                        className='form-input'
+                        placeholder={post.description}
+                        // defaultValue={editInfo.description}
+                        onChange={handleChange}
+                        ref={dcRef}
+                        textarea />
+                    </Grid>
+                    <FooterBtn>
+                      <Button
+                        onClick={() => {
+                          navigate('/')
+                        }}
+                        variant="outlined"
+                        className="cancel-btn"
+                        color='inherit'
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        // onClick={() => {
+                        //   edit_card()
+                        // }}
+                        variant="contained"
+                        className="submit-btn"
+                        color='inherit'
+                        type='submit'
+                      >
+                        Update info
+                      </Button>
+                    </FooterBtn>
                   </div>
-                  <Textarea
-                  style={{
-                    paddingBottom: '90px'
-                  }}
-                    onChange={change_text}
-                    placeholder="A good description makes a photo more discoverable."
-                    label="Description"
-                    textarea />
-                  <div>
-                  Location
-                  </div>
-                  <Textarea
-                    value={location}
-                    onChange={change_location}
-                    placeholder="Add a place or a city"
-                    label="Location"
-                    nomal/>
-                </Grid>
-                <FooterBtn>
-                  <Button
-                    onClick={() => {
-                      navigate('/')
-                    }}
-                    variant="outlined"
-                    className="cancel-btn"
-                    color='inherit'
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    // onClick={() => {
-                    //   edit_card()
-                    // }}
-                    variant="contained"
-                    className="submit-btn"
-                    color='inherit'
-                  >
-                    Update info
-                  </Button>
-                </FooterBtn>
+                </DetailContainer>
+              </ModalContent>
+            )}
 
-              </div>
-            </DetailContainer>
+          </ModalOverlay>
+        </ModalBody>
 
-          </ModalContent>
-        </ModalOverlay>
-      </ModalBody>
+      </form>
+
     </>
   )
 }
