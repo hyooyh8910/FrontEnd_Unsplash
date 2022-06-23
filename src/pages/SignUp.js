@@ -2,10 +2,11 @@ import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import {useNavigate} from 'react-router-dom';
+
 // React-icons
 import { RiKakaoTalkFill } from 'react-icons/ri';
 
-// elements & components
+// **** pages**** //
 import Grid from '../elements/Grid';
 
 
@@ -27,25 +28,19 @@ const navigate = useNavigate();
   const pwRef = useRef(null);
 
 
-  // **** 유효성 검사 **** //
-  /*
-  유효성 검사
-  '시작을'  0~9 사이 숫자 or a-z A-Z 알바펫 아무거나로 시작하고  /  중간에 - _  . 같은 문자가 있을수도 있고 없을수도 있으며 / 
-  그 후에 0~9 사이 숫자 or a-z A-Z 알바펫중 하나의 문자가 없거나 연달아 나올수 있으며 /  @ 가 반드시 존재하고  / 
-  0-9a-zA-Z 여기서 하나가 있고  /  중간에 - _  . 같은 문자가 있을수도 있고 없을수도 있으며 / 그 후에 0~9 사이 숫자 or a-z A-Z 알바펫중 하나의 
-  문자가 없거나 연달아 나올수 있으며 /  반드시  .  이 존재하고  / [a-zA-Z] 의 문자가 2개나 3개가 존재 /   이 모든것은 대소문자 구분안함 
-  */
+  // **** 이메일&패스워드 유효성 검사 **** //
   const emailRegEx = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
   // 유효성 검사 :최소 8 자, 최소 하나의 문자 및 하나의 숫자
   const pwRegEx = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
 
-  console.log(userInfo);
 
   const handleChange = (e) => {
     const { value, name } = e.target;
     setUserInfo({ ...userInfo, [name]: value });
   };
 
+    //CREATE
+  //axios post 요청 user 정보 생성
   const clickJoin = (e) => {
     e.preventDefault();
 
@@ -72,30 +67,10 @@ const navigate = useNavigate();
         alert("WELCOME ;-)");
       })
       .catch(function (error) {
-
-        if (error.response) {
-          // console.log("res", response);
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log("에러1");
-      
-        } else if (error.request) {
-          console.log(error.request);
-          console.log("에러2");
-        } else if (error.message) {
-          console.log("Error", error.message);
-          console.log("에러3");
-        } else {
-          console.log(error.config);
-          console.log("에러4")
-        }
+        console.log(error);
         alert("Invalid email or password.");
       });
-
-    // then/catch
-
   };
-
 
   return (
     <>

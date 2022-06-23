@@ -5,7 +5,6 @@ import axios from 'axios';
 import './Detail.css';
 // react-icons
 import { IoCheckmarkCircleSharp } from 'react-icons/io5'
-import { HiHeart } from 'react-icons/hi'
 import { GoPlus } from 'react-icons/go'
 import { IoIosArrowDown } from 'react-icons/io'
 import { IoArrowRedoSharp } from 'react-icons/io5'
@@ -22,14 +21,8 @@ const Detail = (props) => {
   const token = localStorage.getItem("jwt-token");
   const axios = require('axios');
 
-  // console.log(postIdx);
-
-  // console.log(postIdx);
-
-  // const EditClick = () => {
-  //   navigate(`/posts/edit/${postIdx}`);
-  // };
-
+  //READ
+  //axios get 요청 params값
   useEffect(() => {
     const fetchPost = async () => {
       // console.log(params);
@@ -47,18 +40,20 @@ const Detail = (props) => {
     fetchPost()
   }, []);
 
+  //DELETE
+  //axios delete 요청 게시글 삭제
   const config = () => {
     axios.delete ('http://54.180.105.56/posts/' + postIdx , 
     { headers: { 'Authorization': `Bearer ${token}` }, }
   )
   .then(function (response) {
     console.log(JSON.stringify(response.data));
-    alert("삭제가 완료됐습니다!")
+    alert("Delete Complete")
     navigate('/')
   })
   .catch(function (error) {
     console.log(error);
-    alert("본인이 작성한 게시물만 삭제할 수 있습니다.")
+    alert("Not your post")
   });
   };
 

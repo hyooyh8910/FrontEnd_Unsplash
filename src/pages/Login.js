@@ -5,36 +5,28 @@ import axios from 'axios';
 import { RiKakaoTalkFill } from 'react-icons/ri';
 import { useNavigate } from 'react-router-dom';
 
-// elements & components
+// **** pages**** //
 import Grid from '../elements/Grid'
 
 const Login = () => {
-
   const [loginInfo, setLoginInfo] = React.useState({
     userEmail: "",
     password: "",
   });
 
-  console.log(loginInfo.userEmail);
+  // console.log(loginInfo.userEmail);
   const navigate = useNavigate();
   const { userEmail, password } = loginInfo;
 
-   // **** Ref **** //
-   const emailRef = useRef(null);
-   const pwRef = useRef(null);
+  // **** Ref **** //
+  const emailRef = useRef(null);
+  const pwRef = useRef(null);
 
-    // **** 유효성 검사 **** //
-  /*
-  유효성 검사
-  '시작을'  0~9 사이 숫자 or a-z A-Z 알바펫 아무거나로 시작하고  /  중간에 - _  . 같은 문자가 있을수도 있고 없을수도 있으며 / 
-  그 후에 0~9 사이 숫자 or a-z A-Z 알바펫중 하나의 문자가 없거나 연달아 나올수 있으며 /  @ 가 반드시 존재하고  / 
-  0-9a-zA-Z 여기서 하나가 있고  /  중간에 - _  . 같은 문자가 있을수도 있고 없을수도 있으며 / 그 후에 0~9 사이 숫자 or a-z A-Z 알바펫중 하나의 
-  문자가 없거나 연달아 나올수 있으며 /  반드시  .  이 존재하고  / [a-zA-Z] 의 문자가 2개나 3개가 존재 /   이 모든것은 대소문자 구분안함 
-  */
+  // **** 이메일&패스워드 유효성 검사 **** //
   const emailRegEx = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i
   // 유효성 검사 :최소 8 자, 최소 하나의 문자 및 하나의 숫자
   const pwRegEx = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
- 
+
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -43,16 +35,16 @@ const Login = () => {
   };
   console.log(loginInfo);
 
-
-
+  //READ
+  //axios post 요청 user 정보 확인하기
   const clickLogin = (e) => {
     e.preventDefault();
-    // navigate("/main")
-    if(!emailRegEx.test(userEmail)){
+    //유효성 check
+    if (!emailRegEx.test(userEmail)) {
       emailRef.current.focus();
       alert("Invalid email or password.");
     }
-    if(!pwRegEx.test(password)){
+    if (!pwRegEx.test(password)) {
       alert("Invalid email or password.");
       pwRef.current.focus();
     }
@@ -71,36 +63,16 @@ const Login = () => {
     })
       .then((response) => {
         console.log(response);
-       
         localStorage.setItem("jwt-token", response.data.token);
         alert("WELCOME ;-)");
-        window.location.href="/"
-       
+        window.location.href = "/"
+
       })
       .catch(function (error) {
-
-        if (error.response) {
-          // console.log("res", response);
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log("에러1");
-      
-        } else if (error.request) {
-          console.log(error.request);
-          console.log("에러2");
-        } else if (error.message) {
-          console.log("Error", error.message);
-          console.log("에러3");
-        } else {
-          console.log(error.config);
-          console.log("에러4")
-        }
+        console.log(error);
         alert("Invalid email or password.");
       });
-    };
-
-
-
+  };
 
   return (
     <>
@@ -112,7 +84,7 @@ const Login = () => {
                 <Grid align="center" height="164px" margin="0 0 32 0">
                   <div>
                     <LoginLogo
-                    onChange={clickLogin}
+                      onChange={clickLogin}
                       src="https://unsplash.com/assets/core/logo-black-df2168ed0c378fa5506b1816e75eb379d06cfcd0af01e07a2eb813ae9b5d7405.svg"
                     ></LoginLogo>
                   </div>
@@ -123,10 +95,10 @@ const Login = () => {
                 </Grid>
                 <Grid height="auto">
                   <SocialLogin
-                   onClick ={() => {
-                    window.location.href = "https://accounts.kakao.com/login?continue=https%3A%2F%2Fkauth.kakao.com%2Foauth%2Fauthorize%3Fresponse_type%3Dcode%26redirect_uri%3Dhttp%253A%252F%252Flocalhost%253A8080%252Fuser%252Fsignin%252Fkakao%26client_id%3D366bf4df105f7d1fb0c91cb6b4faeba0"
-                  }} >
-                  <RiKakaoTalkFill size="30" />
+                    onClick={() => {
+                      window.location.href = "https://accounts.kakao.com/login?continue=https%3A%2F%2Fkauth.kakao.com%2Foauth%2Fauthorize%3Fresponse_type%3Dcode%26redirect_uri%3Dhttp%253A%252F%252Flocalhost%253A8080%252Fuser%252Fsignin%252Fkakao%26client_id%3D366bf4df105f7d1fb0c91cb6b4faeba0"
+                    }} >
+                    <RiKakaoTalkFill size="30" />
                     <p>Login with KakaoTalk</p>
                   </SocialLogin>
                 </Grid>
@@ -135,57 +107,53 @@ const Login = () => {
                 </Grid>
 
                 <form onSubmit={clickLogin}>
-                <Grid margin="20px 0" height="auto">
-                  <FormGroup>
-                    <label className='form-label'>Email address</label>
-                    <input 
-                    className='form-input' 
-                    name="userEmail"
-                    defaultValue={loginInfo.userEmail}
-                    onChange={handleChange}
-                    ref={emailRef}
-                    required
-                    ></input>
-                  </FormGroup>
-                  <FormGroup>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <label className='form-label'>Password</label>
-                    </div>
-                    <input 
-                    className="form-input" 
-                    type="password" 
-                    name="password" 
-                    placeholder="min. 8 char"
-                    maxLength="20"
-                    defaultValue={loginInfo.password}
-                    onChange={handleChange}
-                    ref={pwRef}
-                    required
-                    ></input>
-                  </FormGroup>
-                  <Grid height="auto" margin="0 0 24px 0">
-                    <LoginBtn type='submit'>
-                      Login
-                    </LoginBtn>
-                    <Grid margin="32px 0 0 0" height="auto" align="center">
-                      <Question>Don’t have an account? &nbsp;</Question>
-                      <JoinLink
-                       onClick ={() => {
-                        window.location.href = "/user/signup"
-                      }} >
-                        Join Unsplash
-                      </JoinLink>
+                  <Grid margin="20px 0" height="auto">
+                    <FormGroup>
+                      <label className='form-label'>Email address</label>
+                      <input
+                        className='form-input'
+                        name="userEmail"
+                        defaultValue={loginInfo.userEmail}
+                        onChange={handleChange}
+                        ref={emailRef}
+                        required
+                      ></input>
+                    </FormGroup>
+                    <FormGroup>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <label className='form-label'>Password</label>
+                      </div>
+                      <input
+                        className="form-input"
+                        type="password"
+                        name="password"
+                        placeholder="min. 8 char"
+                        maxLength="20"
+                        defaultValue={loginInfo.password}
+                        onChange={handleChange}
+                        ref={pwRef}
+                        required
+                      ></input>
+                    </FormGroup>
+                    <Grid height="auto" margin="0 0 24px 0">
+                      <LoginBtn type='submit'>
+                        Login
+                      </LoginBtn>
+                      <Grid margin="32px 0 0 0" height="auto" align="center">
+                        <Question>Don’t have an account? &nbsp;</Question>
+                        <JoinLink
+                          onClick={() => {
+                            window.location.href = "/user/signup"
+                          }} >
+                          Join Unsplash
+                        </JoinLink>
+                      </Grid>
                     </Grid>
                   </Grid>
-                </Grid>
-
-
                 </form>
-
               </Grid>
             </Grid>
           </Container>
-
         </Grid>
       </Grid>
     </>

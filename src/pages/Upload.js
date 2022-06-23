@@ -4,8 +4,10 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../shared/firebase";
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
-import Grid from '../elements/Grid'
 import { AiOutlineFileImage } from "react-icons/ai";
+// **** pages**** //
+import Grid from '../elements/Grid'
+
 
 
 function Upload() {
@@ -15,10 +17,7 @@ function Upload() {
     const title_ref = useState(null)
     const des_ref = useState(null)
     const token = localStorage.getItem("jwt-token");
-
     const navigate = useNavigate();
-
-
     const [post, setPost] = React.useState({
         title: "",
         description: ""
@@ -44,6 +43,8 @@ function Upload() {
     };
 
     // firebase코드 시작
+    //CREATE
+    //axios post 요청  정보 생성
     const uploadFB = async () => {
         if (title_ref === "") {
             window.alert("텍스트를 입력하세요!")
@@ -77,7 +78,6 @@ function Upload() {
                     console.log(error.response.data.message);
                 })
         }
-
     }
 
     return (

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
 import { useNavigate, useParams } from 'react-router-dom';
+import styled from 'styled-components';
 import axios from 'axios';
 // **** pages**** //
 import EditScroll from '../components/EditScroll';
@@ -11,13 +11,12 @@ import { Button } from '@mui/material';
 
 const Edit = () => {
   const [post, setPost] = React.useState(null);
-  // const card_id = props.match.params.id
-
   const params = useParams();
   const navigate = useNavigate();
   const postIdx = Number(params.postIdx);
 
-  //axios get 요청
+  //READ
+  //axios get 요청 params값
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -34,6 +33,8 @@ const Edit = () => {
   }, []);
 
 
+  //UPDATE
+  //axios put 요청 게시글 수정사항 put
   const [editInfo, setEditInfo] = useState({
     title: "",
     description: "",
@@ -42,7 +43,6 @@ const Edit = () => {
   const dcRef = useRef(null);
 
   console.log(editInfo);
-
   console.log(localStorage);
   //axios 수정 요청
   const clickEdit =  (e) => {
@@ -67,11 +67,11 @@ const Edit = () => {
         navigate(`/posts/detail/${postIdx}`)
 
         console.log(response);
-        alert("enjoy your life");
+        alert("Enjoy your life");
 
       })
       .catch(function (error) {
-        alert("not your post.");
+        alert("Not your post.");
       });
   };
 
@@ -80,11 +80,6 @@ const Edit = () => {
     const { value, name } = e.target;
     setEditInfo({ ...editInfo, [name]: value });
   };
-
-
-
-
-  //post 에서 put으로 바꾸면 된다
 
 
 
@@ -114,11 +109,8 @@ const Edit = () => {
                       </div>
 
                       <Textarea
-                        // value={location}
-                        // onChange={change_location}
                         className='form-input'
                         placeholder={post.title}
-                        // defaultValue={editInfo.title}
                         onChange={handleChange}
                         ref={ttRef}
                         nomal />
@@ -129,10 +121,8 @@ const Edit = () => {
                         style={{
                           paddingBottom: '90px'
                         }}
-                        // onChange={change_text}
                         className='form-input'
                         placeholder={post.description}
-                        // defaultValue={editInfo.description}
                         onChange={handleChange}
                         ref={dcRef}
                         textarea />
@@ -149,9 +139,6 @@ const Edit = () => {
                         Cancel
                       </Button>
                       <Button
-                        // onClick={() => {
-                        //   edit_card()
-                        // }}
                         variant="contained"
                         className="submit-btn"
                         color='inherit'
