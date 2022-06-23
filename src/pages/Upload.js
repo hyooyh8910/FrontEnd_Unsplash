@@ -47,7 +47,7 @@ function Upload() {
     //axios post 요청  정보 생성
     const uploadFB = async () => {
         if (title_ref === "") {
-            window.alert("텍스트를 입력하세요!")
+            window.alert("!")
         }
 
         else {
@@ -69,7 +69,7 @@ function Upload() {
                 }, { headers: { 'Authorization': `Bearer ${token}` }, }
             )
                 .then(function (response) {
-                    alert("작성이 완료되었습니다!")
+                    alert("Create a new post!")
                     navigate('/');
                     console.log(response)
 
