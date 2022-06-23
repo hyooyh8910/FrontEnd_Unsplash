@@ -8,6 +8,8 @@
 ⚡️프로젝트 소개⚡️
 ============
 * unsplash clone
+* http://cloneunsplash.s3-website.ap-northeast-2.amazonaws.com/
+* 영상 링크: https://youtu.be/duDn_qUknXY
 
 
 ## 🤖 구현 기능
